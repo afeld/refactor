@@ -53,7 +53,7 @@ Dir.glob('**/*') do |old_path|
       # show possible matches in body
       line_num = 0
       new_text.each_line do |old_line|
-        new_line = old_line.gsub(/(#{Regexp.quote(from_humanized)})/i, "\e[33m\\1\e[0m")
+        new_line = old_line.gsub(/#{Regexp.quote(from_humanized)}/i, "\e[33m\\0\e[0m")
         unless new_line == old_line
           puts "\e[36m#{new_path}:#{line_num}\e[0m #{new_line}"
         end
