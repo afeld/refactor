@@ -20,22 +20,6 @@ underscored_regex = /(?<=\b|_)#{Regexp.quote(from_underscored)}(?=\b|_)/
 Dir.glob('**/*') do |old_path|
   # ignore certain directories
   unless old_path =~ %r{\A(coverage|pkg|tmp|vendor)(\z|/)}
-    is_file = File.file?(old_path)
-    if is_file
-      # replace within file
-      old_text = File.read(old_path)
-
-      new_text = old_text.dup
-      new_text.gsub!(camelized_regex, to_camelized)
-      new_text.gsub!(dashed_regex, to_dashed)
-      new_text.gsub!(underscored_regex, to_underscored)
-
-      unless new_text == old_text
-        # rewrite existing file
-        File.write(old_path, new_text)
-      end
-    end
-
     # only check the basename so that the directory doesn't get renamed twice
     old_basename = File.basename(old_path)
     new_basename = old_basename.dup
@@ -52,7 +36,20 @@ Dir.glob('**/*') do |old_path|
       FileUtils.mv(old_path, new_path)
     end
 
-    if is_file
+    if File.file?(new_path)
+      # replace within file
+      old_text = File.read(new_path)
+
+      new_text = old_text.dup
+      new_text.gsub!(camelized_regex, to_camelized)
+      new_text.gsub!(dashed_regex, to_dashed)
+      new_text.gsub!(underscored_regex, to_underscored)
+
+      unless new_text == old_text
+        # rewrite existing file
+        File.write(new_path, new_text)
+      end
+
       # show possible matches in body
       line_num = 0
       new_text.each_line do |old_line|
