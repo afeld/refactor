@@ -2,6 +2,8 @@
 
 A command line tool to help refactor your code.
 
+![example](example.png)
+
 ## Usage
 
 Make sure your code is backed up (e.g. under version control and fully committed) first!
