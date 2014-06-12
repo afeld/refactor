@@ -1,3 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'refactor'
+require_relative File.join('..', 'lib', 'refactor')
+
+from = ARGV[0] || raise("Needs a FROM argument.")
+to = ARGV[1] || raise("Needs a TO argument.")
+Refactor.run(from, to)
