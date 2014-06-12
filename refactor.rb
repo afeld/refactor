@@ -13,8 +13,8 @@ to_underscored = to.underscore
 Dir.glob('**/*') do |old_path|
   unless old_path =~ %r{\A(coverage|pkg|tmp|vendor)(\z|/)}
     new_basename = File.basename(old_path).
-      gsub(/(?:\b|_)#{Regexp.quote(from_dashed)}(?:\b|_)/, to_dashed).
-      gsub(/(?:\b|_)#{Regexp.quote(from_underscored)}(?:\b|_)/, to_underscored)
+      gsub(/(?<=\b|_)#{Regexp.quote(from_dashed)}(?=\b|_)/, to_dashed).
+      gsub(/(?<=\b|_)#{Regexp.quote(from_underscored)}(?=\b|_)/, to_underscored)
 
     old_dir = File.dirname(old_path)
     if old_dir == '.'
