@@ -12,4 +12,4 @@ gem install refactor
 refactor FROM TO
 ```
 
-where `FROM` and `TO` can each be a name that `has_underscores`, is `CamelCased`, `has-dashes`, or is `"separated with spaces between quotes"`.  It will replace the `FROM` with the `TO` in the corresponding format.
+where `FROM` and `TO` can each be a name that `has_underscores`, is `CamelCased`, or `has-dashes`.  It will replace the `FROM` with the `TO` in the corresponding format, both in the filenames and the body of the file.
