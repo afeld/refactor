@@ -14,7 +14,6 @@ to_underscored = to.underscore
 
 camelized_regex = /(?<=\b|_)#{Regexp.quote(from_camelized)}(?=\b|_)/
 dashed_regex = /(?<=\b|_)#{Regexp.quote(from_dashed)}(?=\b|_)/
-humanized_regex = /(?<=\b|_)#{Regexp.quote(from_humanized)}(?=\b|_)/i
 underscored_regex = /(?<=\b|_)#{Regexp.quote(from_underscored)}(?=\b|_)/
 
 # all files in current directory
@@ -56,9 +55,10 @@ Dir.glob('**/*') do |old_path|
     if is_file
       # show possible matches in body
       line_num = 0
-      new_text.each_line do |line|
-        if line =~ humanized_regex
-          puts "#{new_path}:#{line_num}: #{line.strip}"
+      new_text.each_line do |old_line|
+        new_line = old_line.gsub(/(#{Regexp.quote(from_humanized)})/i, "\e[33m\\1\e[0m")
+        unless new_line == old_line
+          puts "\e[36m#{new_path}:#{line_num}\e[0m #{new_line}"
         end
         line_num += 1
       end
