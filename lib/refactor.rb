@@ -4,7 +4,7 @@ require 'fileutils'
 require_relative 'refactor/version'
 
 module Refactor
-  def run(from, to)
+  def self.run(from, to)
     from_camelized = from.camelize
     from_dashed = from.dasherize
     from_humanized = from.humanize
@@ -16,6 +16,7 @@ module Refactor
     camelized_regex = /(?<=\b|_)#{Regexp.quote(from_camelized)}(?=\b|_)/
     dashed_regex = /(?<=\b|_)#{Regexp.quote(from_dashed)}(?=\b|_)/
     underscored_regex = /(?<=\b|_)#{Regexp.quote(from_underscored)}(?=\b|_)/
+    # TODO handle TitleCase
 
     # all files in current directory
     Dir.glob('**/*') do |old_path|
@@ -40,6 +41,8 @@ module Refactor
         if File.file?(new_path)
           # replace within file
           old_text = File.read(new_path)
+          # http://robots.thoughtbot.com/fight-back-utf-8-invalid-byte-sequences
+          old_text.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
 
           new_text = old_text.dup
           new_text.gsub!(camelized_regex, to_camelized)
@@ -64,5 +67,4 @@ module Refactor
       end
     end
   end
-  module_function :run
 end
